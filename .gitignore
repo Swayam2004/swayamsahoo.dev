@@ -1,0 +1,17 @@
+# local-only planning notes, grilling transcripts, prototypes
+notes/
+
+# build
+node_modules/
+dist/
+.astro/
+.vercel/
+.env*
+
+# wayfinder map + tickets (local only)
+.scratch/
+
+# astro scaffold
+.wrangler/
+npm-debug.log*
+.DS_Store
