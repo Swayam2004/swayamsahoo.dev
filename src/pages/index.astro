@@ -3,14 +3,10 @@ import Base from '../layouts/Base.astro';
 import BoxHead from '../components/BoxHead.astro';
 import { EXPERIENCE, LEAD, SITE, SOCIALS, TYPING_RECORD_WPM } from '../data/site';
 import { PROJECTS } from '../data/projects';
+import { getChessStats } from '../lib/chess';
 
 const featured = PROJECTS.filter((p) => p.featured);
-const chess = [
-  { value: '1638', label: 'FIDE rating', href: 'https://ratings.fide.com' },
-  { value: '1894', label: 'Lichess rapid peak', href: SOCIALS.lichess.href },
-  { value: '1971', label: 'Lichess blitz peak', href: SOCIALS.lichess.href },
-  { value: '1860', label: 'Chess.com rapid peak', href: SOCIALS.chesscom.href },
-];
+const chess = await getChessStats();
 ---
 
 <Base page="home">
