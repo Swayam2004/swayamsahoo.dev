@@ -88,6 +88,20 @@ const chess = await getChessStats();
   </div>
 </Base>
 
+<script>
+  const best = (['desktop', 'touch'] as const)
+    .map((d) => {
+      try {
+        return JSON.parse(localStorage.getItem(`typing.pb.${d}`) ?? 'null') as { wpm: number } | null;
+      } catch {
+        return null;
+      }
+    })
+    .reduce<number>((m, r) => Math.max(m, r?.wpm ?? 0), 0);
+  const el = document.querySelector('[data-pb]');
+  if (el && best > 0) el.textContent = `your best: ${best} wpm`;
+</script>
+
 <style>
   .teaser{font-family:var(--mono);font-size:14px;margin:8px 0;color:var(--ink2)}
   .work h3{font-size:23px}
