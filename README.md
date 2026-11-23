@@ -11,4 +11,13 @@ npm run dev      # local dev server
 npm run build    # astro check && astro build → dist/
 ```
 
+## Deploy (Cloudflare Workers static assets)
+
+```sh
+npx wrangler login                     # once, opens the browser
+SITE_URL=https://swayamsahoo-dev.<subdomain>.workers.dev npm run deploy
+```
+
+Once `swayamsahoo.dev` is registered, add it as a Custom Domain on the Worker and deploy without `SITE_URL`.
+
 Glossary of site terms: [CONTEXT.md](CONTEXT.md).
