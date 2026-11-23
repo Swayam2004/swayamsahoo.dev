@@ -100,7 +100,7 @@ function reset(newPassage = true): void {
   clearInterval(tick);
   input.value = '';
   input.disabled = false;
-  input.dataset.paletteKey = ''; // no passage contains ?, so before the first keystroke it means "commands"
+  input.dataset.paletteKey = ''; // no passage contains ? or /, so before the first keystroke they mean "commands"
   wpmEl.textContent = '0';
   accEl.textContent = '100';
   timeEl.textContent = '0.0';
@@ -147,7 +147,7 @@ input.addEventListener('beforeinput', (e) => {
       } else clean = false;
     }
     if (!startedAt) {
-      delete input.dataset.paletteKey; // mid-test, ? is a keystroke
+      delete input.dataset.paletteKey; // mid-test, ? and / are keystrokes
       startedAt = performance.now();
       tick = window.setInterval(updateStats, 200);
     }
