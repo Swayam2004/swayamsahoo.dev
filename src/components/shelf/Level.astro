@@ -1,0 +1,42 @@
+---
+// One shelf level of the unit.
+import Box from './Box.astro';
+import Plant from './Plant.astro';
+import type { Level } from '../../lib/cafe';
+
+interface Props { level: Level; last: boolean }
+const { level, last } = Astro.props;
+---
+
+<div class="lvl">
+  {level.groups.map((gr) =>
+    gr.type === 'face' ? <Box name={gr.game.name} game={gr.game} orient="face" /> :
+    gr.type === 'spines' ? <div class="run">{gr.games.map((g) => <Box name={g.name} game={g} orient="spine" />)}</div> :
+    <div class="stack">{[...gr.games].reverse().map((g) => <Box name={g.name} game={g} orient="flat" />)}</div>
+  )}
+  {level.groups.length === 0 && <span class="room"><Plant /><em>room for the next one</em></span>}
+  {level.groups.length > 0 && last && level.free > 16 && <span class="end"><Plant /></span>}
+  {level.label && <span class="tag">{level.label}</span>}
+</div>
+
+<style>
+  .lvl{
+    position:relative;display:flex;align-items:flex-end;gap:calc(var(--s) * 2);
+    height:calc(var(--clear) * var(--s));padding:0 calc(var(--s) * 2);
+    background:linear-gradient(to bottom,rgba(0,0,0,.2),transparent calc(var(--s) * 6)),var(--inner);
+    border-bottom:var(--board) solid var(--fr);
+    box-shadow:0 5px 6px -4px rgba(0,0,0,.45);
+  }
+  .run{display:flex;align-items:flex-end;gap:1px}
+  .stack{display:flex;flex-direction:column;align-items:center}
+  .tag{
+    position:absolute;left:calc(var(--s) * 2);top:0;z-index:4;
+    font:10px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;
+    background:var(--paper);color:var(--ink);border:1px solid var(--rule);border-top:0;padding:3px 7px 4px;
+    box-shadow:0 2px 3px rgba(0,0,0,.2);
+  }
+  .room{display:flex;align-items:flex-end;gap:10px;opacity:.75}
+  .room em{font:italic 13px var(--fell);color:var(--muted);margin-bottom:6px}
+  .end{margin-left:auto;margin-right:calc(var(--s) * 3);display:flex}
+  .lvl :global(.plant){width:calc(var(--s) * 11);min-width:40px}
+</style>

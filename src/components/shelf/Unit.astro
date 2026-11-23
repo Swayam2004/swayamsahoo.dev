@@ -1,0 +1,26 @@
+---
+// One white café unit: casual games on top, then the shelf levels. `cm` is the inner width the games are packed into.
+import Level from './Level.astro';
+import Top from './Top.astro';
+import { levelsFor } from '../../lib/cafe';
+import type { ShelfGame } from '../../lib/shelf';
+
+interface Props { games: readonly ShelfGame[]; casual: readonly string[]; cm: number; class: string }
+const { games, casual, cm, class: cls } = Astro.props;
+const levels = levelsFor(games, cm);
+---
+
+<div class:list={['unitwrap', cls]} style={`--cmw:${cm + 6}`}>
+  <Top names={casual} cm={cm} />
+  <div class="unit">
+    {levels.map((l, i) => <Level level={l} last={i === levels.length - 1} />)}
+  </div>
+</div>
+
+<style>
+  .unitwrap{--s:calc((100cqw - 2 * var(--post)) / var(--cmw))}
+  .unit{position:relative;padding:0 var(--post);border-top:var(--board) solid var(--fr)}
+  .unit::before,.unit::after{content:"";position:absolute;top:calc(-1 * var(--board));bottom:-14px;width:var(--post);background:var(--fr)}
+  .unit::before{left:0}
+  .unit::after{right:0}
+</style>

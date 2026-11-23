@@ -1,3 +1,4 @@
+import { CASUAL } from '../data/games';
 import { PLAY_LOG, type Session, type Tag } from '../data/playlog';
 
 export interface ShelfGame {
@@ -30,10 +31,13 @@ function group(sessions: readonly Session[]): ShelfGame[] {
 }
 
 const counted = PLAY_LOG.filter((s) => !s.extra);
+const extras = group(PLAY_LOG.filter((s) => s.extra));
 
 export const SHELF = {
   games: group(counted),
-  extras: group(PLAY_LOG.filter((s) => s.extra)),
+  extras,
+  /** played but never logged; no dates, never counted */
+  casual: CASUAL.filter((name) => !extras.some((g) => g.name === name)),
   stats: {
     games: new Set(counted.map((s) => s.game)).size,
     sessions: counted.length,

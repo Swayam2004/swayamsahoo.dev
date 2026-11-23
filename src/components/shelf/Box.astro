@@ -1,0 +1,101 @@
+---
+// One game box: face-out, upright spine, or lying flat. Real art if src/assets/boxes has it, a generated cover otherwise.
+import { Image } from 'astro:assets';
+import { formatDate, type ShelfGame } from '../../lib/shelf';
+import { boxArt } from '../../lib/boxart';
+import { dims, look, spineStyle } from '../../lib/cafe';
+
+interface Props {
+  name: string;
+  orient: 'face' | 'spine' | 'flat';
+  /** played games are buttons tied to their ledger row; casual ones are just drawn */
+  game?: ShelfGame;
+  /** stand a face-out box on its short edge */
+  turn?: boolean;
+  style?: string;
+}
+const { name, orient, game, turn = false, style = '' } = Astro.props;
+const [w, h, d] = dims(name, game?.tags.includes('Card'));
+const [W, H] = orient === 'face' ? (turn ? [h, w] : [w, h]) : orient === 'spine' ? [d, h] : [w, d];
+const art = boxArt(name);
+const img = orient === 'face' ? art.cover : art.spine;
+// a flat box shows the same side as a spine, turned on its back
+const rot = orient === 'flat' && img !== undefined;
+const india = game?.tags.includes('Made in India') ?? false;
+const initials = name
+  .split(/[\s:]+/)
+  .filter((x) => /^[A-Z0-9]/.test(x))
+  .slice(0, 2)
+  .map((x) => x[0])
+  .join('');
+const label = game
+  ? `${name}: ${game.plays} ${game.plays === 1 ? 'play' : 'plays'}, last played ${formatDate(game.lastPlayed)}`
+  : '';
+const Tag = game ? 'button' : 'span';
+const cls = ['bx', orient, look(name), img && 'art', turn && 'turn'];
+const word = Math.max(4, ...name.split(/\s+/).map((x) => x.length));
+const vars = `--W:${W};--H:${H};--len:${Math.max(name.length, 4)};--word:${word};${orient === 'face' ? '' : spineStyle(name)}${style}`;
+---
+
+<Tag
+  class:list={cls}
+  style={vars}
+  {...(game ? { type: 'button', 'data-game': name, 'aria-label': label } : { 'aria-hidden': 'true' })}
+>
+  {img ? (
+    <Image
+      src={img}
+      alt=""
+      class:list={['img', rot && 'rot']}
+      width={Math.round((rot ? H : W) * 12)}
+      height={Math.round((rot ? W : H) * 12)}
+      fit="cover"
+      loading="lazy"
+    />
+  ) : (
+    <>
+      {orient === 'face' && W >= 16 && <span class="ini" aria-hidden="true">{initials}</span>}
+      <span class="nm">{name}</span>
+      {orient === 'face' && india && W >= 20 && <span class="stk">Made in India</span>}
+    </>
+  )}
+</Tag>
+
+<style>
+  .bx{
+    all:unset;box-sizing:border-box;position:relative;flex:none;display:flex;overflow:hidden;
+    width:calc(var(--W) * var(--s));height:calc(var(--H) * var(--s));
+    background:var(--bx);color:var(--bt);
+    --a:color-mix(in oklab,var(--pa) 62%,transparent);
+    transition:transform .16s ease,box-shadow .16s ease;
+  }
+  button.bx{cursor:pointer}
+  .bx::before{content:"";position:absolute;inset:0;background:var(--pat);pointer-events:none}
+  .bx.art::before,.bx.art::after{display:none}
+  .bx.on{outline:2px solid var(--red);outline-offset:1px;z-index:3}
+  .bx:focus-visible{outline:2px solid var(--red);outline-offset:2px;z-index:3}
+  .img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .img.rot{inset:auto;left:0;top:0;width:calc(var(--H) * var(--s));height:calc(var(--W) * var(--s));transform-origin:0 0;transform:translateY(calc(var(--H) * var(--s))) rotate(-90deg)}
+
+  .face{flex-direction:column;justify-content:flex-end;padding:calc(var(--s) * 1.3);box-shadow:inset 0 0 0 1px rgba(0,0,0,.22),inset 0 calc(var(--s) * .8) 0 rgba(255,255,255,.08),4px 0 8px -3px rgba(0,0,0,.45)}
+  .face.pat1,.face.pat3,.face.pat5,.face.pat7{justify-content:flex-start}
+  .face::before{opacity:.75}
+  .face .nm{position:relative;align-self:flex-start;max-width:100%;font:400 clamp(9px,min(calc(var(--W) * var(--s) * .1),calc((var(--W) - 4) * var(--s) / (var(--word) * .62))),22px)/1.05 var(--black);background:var(--bx);padding:.25em .4em;box-shadow:0 0 0 1px color-mix(in oklab,var(--bt) 30%,transparent)}
+  .ini{position:absolute;right:6%;bottom:6%;font:400 calc(var(--W) * var(--s) * .34)/1 var(--black);opacity:.2}
+  .stk{position:absolute;top:34%;right:-4px;font:8.5px/1 var(--mono);text-transform:uppercase;background:var(--paper);color:var(--red);border:1px solid var(--red);padding:3px 5px;transform:rotate(7deg)}
+  button.face:hover,button.face:focus-visible,.face.on{transform:translateY(-7px) rotate(-1.2deg);box-shadow:0 10px 16px -6px rgba(0,0,0,.5)}
+
+  .spine{flex-direction:column;align-items:center;padding:calc(var(--s) * 3.2) 0 calc(var(--s) * 1);box-shadow:inset -2px 0 0 rgba(0,0,0,.2),inset 1px 0 0 rgba(255,255,255,.1)}
+  .spine::before{opacity:.22}
+  .spine::after{content:"";position:absolute;left:0;right:0;top:0;height:calc(var(--s) * 2.2);background:var(--pa);opacity:.85}
+  .spine .nm{position:relative;writing-mode:vertical-rl;font:400 clamp(8.5px,min(calc(var(--W) * var(--s) * .42),calc((var(--H) - 5) * var(--s) / (var(--len) * .6))),13px)/1 var(--sc);letter-spacing:.03em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-height:100%}
+  button.spine:hover,button.spine:focus-visible,.spine.on{transform:translateY(-10px)}
+
+  .flat{align-items:center;padding:0 calc(var(--s) * 1.2) 0 calc(var(--s) * 4);box-shadow:inset 0 1px 0 rgba(255,255,255,.14),inset 0 -2px 0 rgba(0,0,0,.25)}
+  .flat::before{opacity:.2}
+  .flat::after{content:"";position:absolute;left:0;top:0;bottom:0;width:calc(var(--s) * 2.6);background:var(--pa);opacity:.85}
+  .flat .nm{position:relative;font:400 clamp(8px,min(calc(var(--H) * var(--s) * .5),calc((var(--W) - 6) * var(--s) / (var(--len) * .6))),13.5px)/1 var(--sc);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  button.flat:hover,button.flat:focus-visible,.flat.on{transform:translateX(10px)}
+
+  @media (prefers-reduced-motion:reduce){ .bx{transition:none} }
+</style>
