@@ -17,10 +17,10 @@ const { title, description = SITE.description, page = 'other', noindex = false }
 const fullTitle = title ? `${title} · ${SITE.title}` : `${SITE.author} · ${SITE.title}`;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const nav = [
-  { href: '/projects', label: 'Projects', key: 'projects' },
+  { href: '/projects/', label: 'Projects', key: 'projects' },
   { href: SITE.resume, label: 'Resume', key: 'resume' },
-  { href: '/shelf', label: 'Board games', key: 'shelf' },
-  { href: '/typing', label: 'Typing test', key: 'typing' },
+  { href: '/shelf/', label: 'Board games', key: 'shelf' },
+  { href: '/typing/', label: 'Typing test', key: 'typing' },
   { href: `mailto:${SITE.email}`, label: 'Contact', key: 'contact' },
 ] as const;
 const personLd = {

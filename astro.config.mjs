@@ -24,6 +24,8 @@ const font = (name, cssVariable, weights, styles = ['normal'], fallback = 'serif
 export default defineConfig({
   // canonical + Open Graph URLs; set SITE_URL to the workers.dev URL until the domain is live
   site: process.env.SITE_URL ?? 'https://swayamsahoo.dev',
+  // every page is a directory, so links and canonicals end in "/"; bare paths would 307 on Workers
+  trailingSlash: 'always',
   compressHTML: true,
   fonts: [
     // frontier
