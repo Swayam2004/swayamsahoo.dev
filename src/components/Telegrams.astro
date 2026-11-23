@@ -1,0 +1,36 @@
+---
+import BoxHead from './BoxHead.astro';
+import { SKINS, SKIN_META } from '../data/skins';
+import { TELEGRAMS, TOTAL_POINTS } from '../data/telegrams';
+---
+
+<section class="telegrams" data-telegrams>
+  <BoxHead section="achievements" />
+  <div class="meta">
+    PROGRESS <span data-points>0</span> / {TOTAL_POINTS} · LEVEL <span data-level>1</span> ·
+    {SKINS.map((s) => (
+      <span class={`v v-${s}`} data-rank-skin={s}>{SKIN_META[s].ranks[0].toUpperCase()}</span>
+    ))}
+  </div>
+  <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax={TOTAL_POINTS} aria-valuenow="0" aria-label="Progress"><i></i></div>
+  <ul class="tele">
+    {TELEGRAMS.map((t) => (
+      <li class="locked" data-telegram={t.id} title={t.hidden ? 'Hidden' : t.hint}>
+        <span class="ic" aria-hidden="true">{t.icon}</span>
+        <span class="t">{t.hidden ? '??? (hidden)' : t.title}</span>
+        <span class="pts">+{t.points}</span>
+      </li>
+    ))}
+  </ul>
+  <button type="button" class="reset meta" data-reset-progress>reset progress</button>
+</section>
+
+<style>
+  .tele{list-style:none;font-family:var(--mono);font-size:12.5px;line-height:1.5}
+  .tele li{display:grid;grid-template-columns:18px 1fr auto;gap:6px;padding:5px 0;border-bottom:1px dashed var(--soft)}
+  .tele li.locked{opacity:.45}
+  .tele .pts{color:var(--muted)}
+  .reset{all:unset;cursor:pointer;font-family:var(--mono);font-size:11.5px;color:var(--muted);text-decoration:underline;text-decoration-color:var(--soft);margin-top:8px;display:inline-block}
+  .reset:hover{color:var(--red)}
+  .reset:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+</style>
