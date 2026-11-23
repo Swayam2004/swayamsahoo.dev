@@ -1,0 +1,70 @@
+---
+import Base from '../layouts/Base.astro';
+import BoxHead from '../components/BoxHead.astro';
+import { SHELF, formatDate } from '../lib/shelf';
+
+const { games, extras, stats } = SHELF;
+const extrasText = extras.map((g) => (g.plays > 1 ? `${g.name} ×${g.plays}` : g.name)).join(', ');
+---
+
+<Base title="Board games" page="shelf" description="Every board game Swayam Sahoo has played or hosted since May 2026.">
+  <BoxHead section="games" level="h1" />
+  <p class="deck intro">
+    {stats.games} games · {stats.sessions} sessions · {stats.hosted} hosted, since {formatDate(stats.since)}. Built from my play log.
+  </p>
+
+  <table class="shelf">
+    <thead>
+      <tr><th scope="col">Game</th><th scope="col" class="n">Plays</th><th scope="col" class="n">Hosted</th><th scope="col">Last played</th></tr>
+    </thead>
+    <tbody>
+      {games.map((g) => (
+        <tr>
+          <td class="game">
+            <span class="gname">{g.name}</span>
+            {g.tags.map((t) => <span class={`tag ${t === 'Made in India' ? 'india' : ''}`}>{t}</span>)}
+            {g.notes.length > 0 && <span class="note">with {g.notes.join('; ')}</span>}
+          </td>
+          <td class="n">{g.plays}</td>
+          <td class="n">{g.hosted || '·'}</td>
+          <td class="meta">{formatDate(g.lastPlayed)}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+
+  <section class="extras">
+    <div class="boxhead"><h2 class="fl">Extras</h2><span class="pl">Not counted</span></div>
+    <p class="meta">
+      Very casual games, played for fun and left out of the totals: {extrasText}.
+    </p>
+  </section>
+</Base>
+
+<script>
+  document.dispatchEvent(new CustomEvent('site:visit', { detail: { page: 'shelf' } }));
+</script>
+
+<style>
+  .intro{margin:0 0 16px}
+  .shelf{width:100%;border-collapse:collapse;font-size:15.5px}
+  .shelf th{font-family:var(--sc);font-weight:400;font-size:13px;letter-spacing:.1em;color:var(--muted);text-align:left;border-bottom:2px solid var(--rule);padding:6px 10px 6px 0}
+  .shelf td{border-bottom:1px dashed var(--soft);padding:8px 10px 8px 0;vertical-align:baseline}
+  .shelf .n{text-align:right;font-family:var(--mono);width:80px}
+  .gname{font-family:var(--sc);font-size:18px;margin-right:8px}
+  .tag{display:inline-block;font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;border:1px solid var(--soft);padding:0 6px;margin-right:4px;color:var(--muted);vertical-align:2px}
+  .tag.india{border-color:var(--red);color:var(--red)}
+  [data-skin=woodland] .tag,[data-skin=marquise] .tag{border-radius:999px}
+  .note{display:block;font-family:var(--fell);font-style:italic;font-size:13.5px;color:var(--muted)}
+  .extras{margin-top:28px}
+  @media (max-width:560px){
+    .shelf thead{display:none}
+    .shelf tr{display:grid;grid-template-columns:1fr auto;border-bottom:1px dashed var(--soft);padding:6px 0}
+    .shelf td{border:0;padding:0}
+    .shelf td.game{grid-column:1/-1}
+    .shelf td.n{width:auto;text-align:left}
+    .shelf td.n:nth-child(2)::before{content:"plays "}
+    .shelf td.n:nth-child(3){display:none}
+    .shelf td.meta{text-align:right}
+  }
+</style>
