@@ -1,0 +1,22 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Page not found" noindex>
+  <section class="missing">
+    <div class="kicker">Correction</div>
+    <h1 class="hl">This Page Was Never Printed</h1>
+    <p class="deck">The editor regrets the error. Whatever you were looking for isn't in this edition, and may never have been.</p>
+    <div class="btns">
+      <a class="p" href="/">front page →</a>
+      <a href="/projects">projects</a>
+      <button type="button" data-open-palette>all commands</button>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .missing{max-width:620px;margin:40px auto 60px;text-align:center}
+  .missing .hl{font-size:clamp(32px,5vw,48px)}
+  .missing .btns{justify-content:center}
+</style>

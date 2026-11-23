@@ -10,9 +10,10 @@ interface Props {
   title?: string;
   description?: string;
   page?: 'home' | 'projects' | 'shelf' | 'typing' | 'other';
+  noindex?: boolean;
 }
 
-const { title, description = SITE.description, page = 'other' } = Astro.props;
+const { title, description = SITE.description, page = 'other', noindex = false } = Astro.props;
 const fullTitle = title ? `${title} · ${SITE.title}` : `${SITE.author} · ${SITE.title}`;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const nav = [
@@ -22,6 +23,15 @@ const nav = [
   { href: '/typing', label: 'Typing test', key: 'typing' },
   { href: `mailto:${SITE.email}`, label: 'Contact', key: 'contact' },
 ] as const;
+const personLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: SITE.author,
+  url: Astro.site?.href,
+  jobTitle: 'Software Engineer',
+  email: `mailto:${SITE.email}`,
+  sameAs: ['https://github.com/Swayam2004', 'https://www.linkedin.com/in/swayamsahoo1223', 'https://lichess.org/@/SwayamSahoo'],
+};
 const dateline = new Date().toLocaleDateString('en-US', {
   weekday: 'long',
   year: 'numeric',
@@ -40,6 +50,19 @@ const dateline = new Date().toLocaleDateString('en-US', {
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE.title} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL('/og.png', Astro.site)} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="The Ātman Times, the newspaper-style site of Swayam Sahoo" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="sitemap" href="/sitemap.xml" />
+    <script type="application/ld+json" set:html={JSON.stringify(personLd)} />
     <meta name="generator" content={Astro.generator} />
     <meta name="theme-color" content="#ece0c5" />
     <script is:inline>
@@ -80,7 +103,7 @@ const dateline = new Date().toLocaleDateString('en-US', {
     <Font cssVariable="--f-root-sc" />
     <Font cssVariable="--f-root-serif" />
     <Font cssVariable="--f-mono" />
-    <slot name="head" />
+    {noindex && <meta name="robots" content="noindex" />}
   </head>
   <body>
     <a class="sr-only" href="#main">Skip to content</a>
