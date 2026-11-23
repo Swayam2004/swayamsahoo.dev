@@ -15,7 +15,7 @@ npm run build    # astro check && astro build → dist/
 
 ```sh
 npx wrangler login                     # once, opens the browser
-SITE_URL=https://swayamsahoo-dev.<subdomain>.workers.dev npm run deploy
+SITE_URL=https://swayamsahoo-dev.swayamsahoo.workers.dev npm run deploy
 ```
 
 Once `swayamsahoo.dev` is registered, add it as a Custom Domain on the Worker and deploy without `SITE_URL`.
