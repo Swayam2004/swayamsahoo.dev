@@ -1,0 +1,11 @@
+---
+import { SECTIONS, SKINS, type SectionKey } from '../data/skins';
+
+interface Props {
+  section: SectionKey;
+}
+
+const words = SECTIONS[Astro.props.section];
+---
+
+{SKINS.map((skin) => <span class={`v v-${skin}`}>{words[skin]}</span>)}

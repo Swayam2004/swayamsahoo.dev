@@ -1,0 +1,17 @@
+---
+import Flavor from './Flavor.astro';
+import { SECTIONS, type SectionKey } from '../data/skins';
+
+interface Props {
+  section: SectionKey;
+  level?: 'h1' | 'h2';
+}
+
+const { section, level = 'h2' } = Astro.props;
+const Tag = level;
+---
+
+<div class="boxhead">
+  <Tag class="fl"><Flavor section={section} /></Tag>
+  <span class="pl">{SECTIONS[section].plain}</span>
+</div>
