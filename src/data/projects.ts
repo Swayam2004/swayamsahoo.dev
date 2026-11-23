@@ -20,7 +20,7 @@ export const PROJECTS: readonly Project[] = [
     summary:
       'Three agents read PDFs, docs and emails and write executable IT runbooks, with approval, dry-run and rollback.',
     meta: 'top 10 / 22k at Hacksplosion',
-    link: { label: 'live', href: 'https://tars-seven-alpha.vercel.app' },
+    link: { label: 'repo', href: 'https://github.com/Swayam2004/TARS' },
     stack: ['python', 'langgraph', 'fastapi', 'react'],
     featured: true,
   },
