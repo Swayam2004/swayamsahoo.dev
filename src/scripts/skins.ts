@@ -9,7 +9,7 @@ export const todayKey = (): string => {
   return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
 };
 
-export const currentSkin = (): Skin => (isSkin(root.dataset.skin) ? root.dataset.skin : 'frontier');
+export const currentSkin = (): Skin => (isSkin(root.dataset.skin) ? root.dataset.skin : 'marquise');
 export const isNight = (): boolean => root.dataset.ed === 'night';
 
 function store(key: string, value: string): void {

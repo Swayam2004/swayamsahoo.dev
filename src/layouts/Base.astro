@@ -42,7 +42,7 @@ const dateline = new Date().toLocaleDateString('en-US', {
 ---
 
 <!doctype html>
-<html lang="en" data-skin="frontier">
+<html lang="en" data-skin="marquise">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -64,7 +64,7 @@ const dateline = new Date().toLocaleDateString('en-US', {
     <link rel="sitemap" href="/sitemap.xml" />
     <script type="application/ld+json" set:html={JSON.stringify(personLd)} />
     <meta name="generator" content={Astro.generator} />
-    <meta name="theme-color" content="#ece0c5" />
+    <meta name="theme-color" content="#f8e7cf" />
     <script is:inline>
       // Runs before paint: pick today's skin and the saved edition so nothing flashes.
       (function () {
@@ -79,7 +79,7 @@ const dateline = new Date().toLocaleDateString('en-US', {
         };
         var last = get('skin.last');
         var pick = get('skin.pick');
-        var rot = 'frontier';
+        var rot = 'marquise';
         if (last && S.indexOf(last.skin) > -1) {
           rot = last.date === today ? last.skin : S[(S.indexOf(last.skin) + 1) % S.length];
         }
@@ -94,14 +94,15 @@ const dateline = new Date().toLocaleDateString('en-US', {
         if (ed === 'night') root.dataset.ed = 'night';
       })();
     </script>
-    <Font cssVariable="--f-frontier-black" preload />
-    <Font cssVariable="--f-frontier-sc" preload />
+    <!-- marquise is the first-visit skin, so its latin fonts are the ones worth preloading -->
+    <Font cssVariable="--f-marquise-black" preload={[{ subset: 'latin' }]} />
+    <Font cssVariable="--f-root-sc" preload={[{ subset: 'latin' }]} />
+    <Font cssVariable="--f-root-serif" preload={[{ subset: 'latin', weight: 400, style: 'normal' }]} />
+    <Font cssVariable="--f-frontier-black" />
+    <Font cssVariable="--f-frontier-sc" />
     <Font cssVariable="--f-frontier-fell" />
-    <Font cssVariable="--f-frontier-serif" preload />
+    <Font cssVariable="--f-frontier-serif" />
     <Font cssVariable="--f-woodland-black" />
-    <Font cssVariable="--f-marquise-black" />
-    <Font cssVariable="--f-root-sc" />
-    <Font cssVariable="--f-root-serif" />
     <Font cssVariable="--f-mono" />
     {noindex && <meta name="robots" content="noindex" />}
   </head>
