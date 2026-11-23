@@ -147,6 +147,15 @@ section{margin-bottom:26px}
   .side .photo{max-width:180px;margin:0 auto}.side .cap{text-align:center}
 }
 
+/* ============ toasts ============ */
+.toasts{position:fixed;left:18px;bottom:18px;display:flex;flex-direction:column;gap:8px;z-index:60;pointer-events:none}
+.toast{background:var(--paper);color:var(--ink);border:1px solid var(--rule);box-shadow:0 8px 24px rgba(0,0,0,.18);padding:8px 14px;font-family:var(--mono);font-size:12.5px;max-width:320px;animation:toastIn .35s cubic-bezier(.2,.8,.3,1)}
+.toast .k{display:block;font-family:var(--sc);font-size:12px;letter-spacing:.14em;color:var(--red);text-transform:uppercase}
+.toast.out{opacity:0;transform:translateY(8px);transition:opacity .5s,transform .5s}
+[data-skin=woodland] .toast,[data-skin=marquise] .toast{border-radius:12px}
+@keyframes toastIn{from{opacity:0;transform:translateY(12px)}}
+@media (max-width:959px){.toasts{bottom:76px;left:12px;right:12px}.toast{max-width:none}}
+
 /* ============ view transitions ============ */
 ::view-transition-old(root),::view-transition-new(root){animation:none;mix-blend-mode:normal}
 html.vt-skin::view-transition-old(root){animation:vtOut .5s cubic-bezier(.4,0,.2,1) both}

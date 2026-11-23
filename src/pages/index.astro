@@ -4,6 +4,7 @@ import BoxHead from '../components/BoxHead.astro';
 import { EXPERIENCE, LEAD, SITE, SOCIALS, TYPING_RECORD_WPM } from '../data/site';
 import { PROJECTS } from '../data/projects';
 import { getChessStats } from '../lib/chess';
+import Telegrams from '../components/Telegrams.astro';
 
 const featured = PROJECTS.filter((p) => p.featured);
 const chess = await getChessStats();
@@ -84,6 +85,7 @@ const chess = await getChessStats();
           ))}
         </div>
       </section>
+      <Telegrams />
     </aside>
   </div>
 </Base>
