@@ -71,6 +71,7 @@ let pos = 0;
 let done = false;
 let tick = 0;
 let last: Result | null = null;
+let lastWasPB = false;
 
 function render(): void {
   textEl.replaceChildren(
@@ -206,15 +207,23 @@ function finish(): void {
     }
   }
   showPB();
+  lastWasPB = newPB;
   const beat = r.wpm > TYPING_RECORD_WPM;
   resultLine.textContent = `${r.wpm} wpm · ${r.accuracy}% accuracy · ${r.seconds}s`;
-  verdictEl.textContent = beat
-    ? `${SKIN_META[skinNow()].shareLine}. You beat the editor's ${TYPING_RECORD_WPM}.`
-    : `${TYPING_RECORD_WPM - r.wpm} wpm short of the editor.${newPB ? ' New personal best, though.' : ''}`;
-  shareText.textContent = shareMessage(r);
+  showVerdict();
   resultEl.hidden = false;
   void drawCard();
   document.dispatchEvent(new CustomEvent('site:typing', { detail: { wpm: r.wpm, accuracy: r.accuracy, beat } }));
+}
+
+/** The verdict and share text use the skin's wording, so they're rewritten on every skin change. */
+function showVerdict(): void {
+  if (!last) return;
+  verdictEl.textContent =
+    last.wpm > TYPING_RECORD_WPM
+      ? `${SKIN_META[skinNow()].shareLine}. You beat the editor's ${TYPING_RECORD_WPM}.`
+      : `${TYPING_RECORD_WPM - last.wpm} wpm short of the editor.${lastWasPB ? ' New personal best, though.' : ''}`;
+  shareText.textContent = shareMessage(last);
 }
 
 async function drawCard(): Promise<void> {
@@ -263,7 +272,10 @@ document.querySelector('#tt-again')?.addEventListener('click', () => reset());
 textEl.addEventListener('click', () => input.focus());
 document.addEventListener('site:skin', () => {
   if (!startedAt) reset();
-  else if (done) void drawCard();
+  else if (done) {
+    showVerdict();
+    void drawCard();
+  }
 });
 document.addEventListener('site:edition', () => {
   if (done) void drawCard();
