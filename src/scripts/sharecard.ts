@@ -50,16 +50,22 @@ function emblem(ctx: CanvasRenderingContext2D, skin: Skin, x: number, y: number,
   ctx.restore();
 }
 
+let generation = 0;
+
 export async function drawShareCard(canvas: HTMLCanvasElement, d: CardData): Promise<void> {
+  const draw = ++generation;
   const t = tokens();
-  canvas.width = W;
-  canvas.height = H;
-  const ctx = canvas.getContext('2d');
-  if (!ctx) return;
 
   await Promise.allSettled(
     [`64px ${t.black}`, `40px ${t.sc}`, `italic 28px ${t.fell}`, `24px ${t.mono}`].map((f) => document.fonts.load(f)),
   );
+  // a quicker skin switch started a newer draw while this one waited on fonts
+  if (draw !== generation) return;
+
+  canvas.width = W;
+  canvas.height = H;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
 
   ctx.fillStyle = t.paper;
   ctx.fillRect(0, 0, W, H);
