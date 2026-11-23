@@ -14,10 +14,10 @@ npm run build    # astro check && astro build → dist/
 ## Deploy (Cloudflare Workers static assets)
 
 ```sh
-npx wrangler login                     # once, opens the browser
-SITE_URL=https://swayamsahoo-dev.swayamsahoo.workers.dev npm run deploy
+npx wrangler login   # once, opens the browser
+npm run deploy
 ```
 
-Once `swayamsahoo.dev` is registered, add it as a Custom Domain on the Worker and deploy without `SITE_URL`.
+The Worker serves `swayamsahoo.dev` as a Custom Domain (`routes` in `wrangler.jsonc`), which is also the default `site` for canonical, Open Graph, robots and sitemap URLs. Set `SITE_URL` only to build for a different origin.
 
 Glossary of site terms: [CONTEXT.md](CONTEXT.md).

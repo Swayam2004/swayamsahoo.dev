@@ -2,7 +2,8 @@
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "swayamsahoo-dev",
   "compatibility_date": "2026-11-23",
-  // keep the workers.dev URL live even after a custom domain is added
+  "routes": [{ "pattern": "swayamsahoo.dev", "custom_domain": true }],
+  // workers.dev stays live for old links; its pages declare swayamsahoo.dev as canonical
   "workers_dev": true,
   "assets": {
     "directory": "./dist",
