@@ -29,7 +29,7 @@ const save = (): void => {
 
 const skin = (): Skin => {
   const s = document.documentElement.dataset.skin;
-  return (SKINS as readonly string[]).includes(s ?? '') ? (s as Skin) : 'frontier';
+  return (SKINS as readonly string[]).includes(s ?? '') ? (s as Skin) : 'marquise';
 };
 
 const points = (): number => TELEGRAMS.reduce((sum, t) => sum + (state.earned[t.id] ? t.points : 0), 0);

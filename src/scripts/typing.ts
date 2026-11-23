@@ -35,7 +35,7 @@ export function readPB(d: Device): Result | null {
 
 const skinNow = (): Skin => {
   const s = root.dataset.skin;
-  return (SKINS as readonly string[]).includes(s ?? '') ? (s as Skin) : 'frontier';
+  return (SKINS as readonly string[]).includes(s ?? '') ? (s as Skin) : 'marquise';
 };
 
 function pickPassage(exclude?: string): Passage {

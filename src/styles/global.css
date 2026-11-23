@@ -10,7 +10,7 @@ button{font:inherit;color:inherit}
   --m-tree:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M8 1L3 8h3l-3 4h4v3h2v-3h4l-3-4h3z'/%3E%3C/svg%3E");
   --m-paw:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cellipse cx='8' cy='11' rx='3.4' ry='3'/%3E%3Ccircle cx='3.2' cy='7' r='1.6'/%3E%3Ccircle cx='6' cy='3.8' r='1.6'/%3E%3Ccircle cx='10' cy='3.8' r='1.6'/%3E%3Ccircle cx='12.8' cy='7' r='1.6'/%3E%3C/svg%3E");
 }
-:root,:root[data-skin=frontier]{
+:root[data-skin=frontier]{
   --paper:#ece0c5;--ink:#22170d;--ink2:#4a3726;--muted:#7a6347;--red:#8e1b16;--rule:#2a1c10;--soft:#bfa77f;--panel:rgba(255,250,236,.5);
   --black:var(--f-frontier-black);--sc:var(--f-frontier-sc);--fell:var(--f-frontier-fell);--serif:var(--f-frontier-serif);
   --bg:radial-gradient(ellipse at 15% 0%,rgba(255,252,240,.55),transparent 45%),radial-gradient(ellipse at 90% 100%,rgba(110,70,30,.16),transparent 50%),radial-gradient(ellipse at center,transparent 62%,rgba(60,35,12,.28));
@@ -29,7 +29,7 @@ button{font:inherit;color:inherit}
   --paper:#13201a;--ink:#e6eed6;--ink2:#c3d1ac;--muted:#8fa383;--red:#e8b04a;--rule:#8fae6c;--soft:#2f4634;--panel:rgba(232,176,74,.05);
   --bg:radial-gradient(ellipse at 50% 0%,rgba(232,176,74,.08),transparent 55%);
 }
-:root[data-skin=marquise]{
+:root,:root[data-skin=marquise]{
   --paper:#f8e7cf;--ink:#2d1a0c;--ink2:#5a3518;--muted:#8f6436;--red:#d8591a;--rule:#4a2a12;--soft:#e7b98a;--panel:rgba(255,240,220,.6);
   --black:var(--f-marquise-black);--sc:var(--f-root-sc);--fell:var(--f-root-serif);--serif:var(--f-root-serif);
   --bg:radial-gradient(ellipse at 80% 0%,rgba(255,200,140,.45),transparent 50%),radial-gradient(ellipse at center,transparent 60%,rgba(160,70,10,.16));
@@ -49,7 +49,7 @@ a:hover{color:var(--red)}
 
 /* flavor words: all skins rendered, CSS shows the active one (no flash on load) */
 .v{display:none}
-:root:not([data-skin]) .v-frontier,[data-skin=frontier] .v-frontier,[data-skin=woodland] .v-woodland,[data-skin=marquise] .v-marquise{display:inline}
+:root:not([data-skin]) .v-marquise,[data-skin=frontier] .v-frontier,[data-skin=woodland] .v-woodland,[data-skin=marquise] .v-marquise{display:inline}
 
 /* ============ page frame ============ */
 .wrap{max-width:1180px;margin:0 auto;padding:0 28px 170px;position:relative;z-index:2}
@@ -66,9 +66,9 @@ a:hover{color:var(--red)}
 .masthead .sub{font-family:var(--fell);font-style:italic;color:var(--ink2);font-size:clamp(15px,2vw,19px);margin-top:4px}
 .mac{position:relative;display:inline-block}
 .mac::before{content:"";position:absolute;left:18%;right:18%;top:.02em;height:.07em;min-height:3px;background:currentColor;border-radius:2px}
-[data-skin=frontier] .mac::before,:root:not([data-skin]) .mac::before{top:-.04em;left:22%;right:14%}
+[data-skin=frontier] .mac::before{top:-.04em;left:22%;right:14%}
 [data-skin=woodland] .mac::before{top:-.1em}
-[data-skin=marquise] .mac::before{top:.08em}
+[data-skin=marquise] .mac::before,:root:not([data-skin]) .mac::before{top:.08em}
 [data-skin=marquise] .masthead{border-bottom-style:solid;border-bottom-width:3px}
 .dateline{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-family:var(--sc);font-size:13px;letter-spacing:.06em;border-bottom:1px solid var(--rule);padding:5px 2px;margin-bottom:22px}
 
