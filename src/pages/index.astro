@@ -1,16 +1,98 @@
 ---
+import Base from '../layouts/Base.astro';
+import BoxHead from '../components/BoxHead.astro';
+import { EXPERIENCE, LEAD, SITE, SOCIALS, TYPING_RECORD_WPM } from '../data/site';
+import { PROJECTS } from '../data/projects';
+
+const featured = PROJECTS.filter((p) => p.featured);
+const chess = [
+  { value: '1638', label: 'FIDE rating', href: 'https://ratings.fide.com' },
+  { value: '1894', label: 'Lichess rapid peak', href: SOCIALS.lichess.href },
+  { value: '1971', label: 'Lichess blitz peak', href: SOCIALS.lichess.href },
+  { value: '1860', label: 'Chess.com rapid peak', href: SOCIALS.chesscom.href },
+];
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Base page="home">
+  <div class="grid">
+    <section class="lead">
+      <div class="kicker">{LEAD.kicker}</div>
+      <h1 class="hl" style="font-size:clamp(32px,4vw,44px)">{LEAD.headline}</h1>
+      <p class="deck">{LEAD.deck}</p>
+      <p class="dropcap">{LEAD.body}</p>
+      <div class="btns">
+        <a class="p" href={SITE.resume} target="_blank" rel="noopener" data-track="resume">resume.pdf ↗</a>
+        <a href={SOCIALS.github.href} rel="me">github ↗</a>
+        <a href={SOCIALS.linkedin.href} rel="me">linkedin ↗</a>
+        <a href={`mailto:${SITE.email}`}>email</a>
+      </div>
+    </section>
+
+    <section class="exp">
+      <BoxHead section="experience" />
+      <div class="ledger">
+        {EXPERIENCE.map((job) => (
+          <div><span>{job.when}</span><span>{job.what}</span></div>
+        ))}
+      </div>
+    </section>
+
+    <section class="type">
+      <BoxHead section="typing" />
+      <div class="panel">
+        <div class="meta">Editor's record: {TYPING_RECORD_WPM} wpm · <span data-pb>your best: none yet</span></div>
+        <p class="teaser">Think you can out-type the editor? Sixty words of copy, one clock, no mercy.</p>
+        <div class="btns" style="margin-top:6px"><a href="/typing">take the test →</a></div>
+      </div>
+    </section>
+
+    <section class="work">
+      <BoxHead section="projects" />
+      {featured.map((p) => (
+        <article class="story">
+          <div class="kicker">{p.kicker}</div>
+          <h3 class="hl">{p.headline}</h3>
+          <p>{p.summary}</p>
+          <div class="meta">
+            {p.meta}
+            {p.link && (
+              <>
+                {' · '}
+                <a href={p.link.href} data-track="dispatch">{p.link.label} ↗</a>
+              </>
+            )}
+            {' · '}
+            {p.stack.slice(0, 3).join(' · ')}
+          </div>
+        </article>
+      ))}
+      <div class="btns"><a href="/projects">all projects →</a></div>
+    </section>
+
+    <aside class="side">
+      <section class="wanted" aria-label="Availability">
+        <div class="w">WANTED</div>
+        <div class="for">{SITE.availability.what}</div>
+        <div class="when">{SITE.availability.when}</div>
+        <div class="meta">{SITE.availability.where} · <a href="#contact">write in ↓</a></div>
+      </section>
+      <section>
+        <img class="photo" src="/img/avatar.png" alt="Swayam Sahoo, pixelated portrait" width="96" height="96" />
+        <div class="cap">The engineer, as printed.</div>
+      </section>
+      <section>
+        <BoxHead section="chess" />
+        <div class="chess">
+          {chess.map((c) => (
+            <a href={c.href}><b>{c.value}</b><span>{c.label}</span></a>
+          ))}
+        </div>
+      </section>
+    </aside>
+  </div>
+</Base>
+
+<style>
+  .teaser{font-family:var(--mono);font-size:14px;margin:8px 0;color:var(--ink2)}
+  .work h3{font-size:23px}
+</style>

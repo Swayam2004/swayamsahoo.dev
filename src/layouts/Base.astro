@@ -1,0 +1,127 @@
+---
+import { Font } from 'astro:assets';
+import '../styles/global.css';
+import SkinControls from '../components/SkinControls.astro';
+import Scenery from '../components/Scenery.astro';
+import { SITE } from '../data/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+  page?: 'home' | 'projects' | 'shelf' | 'typing' | 'other';
+}
+
+const { title, description = SITE.description, page = 'other' } = Astro.props;
+const fullTitle = title ? `${title} · ${SITE.title}` : `${SITE.author} · ${SITE.title}`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const nav = [
+  { href: '/projects', label: 'Projects', key: 'projects' },
+  { href: SITE.resume, label: 'Resume', key: 'resume' },
+  { href: '/shelf', label: 'Board games', key: 'shelf' },
+  { href: '/typing', label: 'Typing test', key: 'typing' },
+  { href: `mailto:${SITE.email}`, label: 'Contact', key: 'contact' },
+] as const;
+const dateline = new Date().toLocaleDateString('en-US', {
+  weekday: 'long',
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  timeZone: 'Asia/Kolkata',
+});
+---
+
+<!doctype html>
+<html lang="en" data-skin="frontier">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#ece0c5" />
+    <script is:inline>
+      // Runs before paint: pick today's skin and the saved edition so nothing flashes.
+      (function () {
+        var S = ['frontier', 'woodland', 'marquise'];
+        var d = new Date();
+        var today = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+        var get = function (k) {
+          try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch (e) { return null; }
+        };
+        var set = function (k, v) {
+          try { localStorage.setItem(k, v); } catch (e) {}
+        };
+        var last = get('skin.last');
+        var pick = get('skin.pick');
+        var rot = 'frontier';
+        if (last && S.indexOf(last.skin) > -1) {
+          rot = last.date === today ? last.skin : S[(S.indexOf(last.skin) + 1) % S.length];
+        }
+        if (!last || last.date !== today) set('skin.last', JSON.stringify({ skin: rot, date: today }));
+        var skin = pick && pick.date === today && S.indexOf(pick.skin) > -1 ? pick.skin : rot;
+        var q = new URLSearchParams(location.search).get('skin');
+        if (q && S.indexOf(q) > -1) skin = q;
+        var root = document.documentElement;
+        root.dataset.skin = skin;
+        var ed = null;
+        try { ed = localStorage.getItem('edition'); } catch (e) {}
+        if (ed === 'night') root.dataset.ed = 'night';
+      })();
+    </script>
+    <Font cssVariable="--f-frontier-black" preload />
+    <Font cssVariable="--f-frontier-sc" preload />
+    <Font cssVariable="--f-frontier-fell" />
+    <Font cssVariable="--f-frontier-serif" preload />
+    <Font cssVariable="--f-woodland-black" />
+    <Font cssVariable="--f-marquise-black" />
+    <Font cssVariable="--f-root-sc" />
+    <Font cssVariable="--f-root-serif" />
+    <Font cssVariable="--f-mono" />
+    <slot name="head" />
+  </head>
+  <body>
+    <a class="sr-only" href="#main">Skip to content</a>
+    <Scenery />
+    <div class="wrap">
+      <div class="topbar">
+        <a class="home" href="/">swayamsahoo.dev</a>
+        <nav aria-label="Main">
+          {nav.map((n) => (
+            <a
+              href={n.href}
+              aria-current={n.key === page ? 'page' : undefined}
+              target={n.key === 'resume' ? '_blank' : undefined}
+              rel={n.key === 'resume' ? 'noopener' : undefined}
+            >
+              {n.label}
+            </a>
+          ))}
+        </nav>
+        <div class="r"><SkinControls /></div>
+      </div>
+
+      <header class="masthead">
+        <p class="name">
+          <a href="/" aria-label={SITE.title}>The <span class="mac">A</span>tman Times</a>
+        </p>
+        <p class="sub">{SITE.tagline}</p>
+      </header>
+      <div class="dateline"><span>Vol. I · No. 1</span><span>{SITE.place}</span><span data-today>{dateline}</span></div>
+
+      <main id="main"><slot /></main>
+
+      <footer class="foot meta" id="contact">
+        <span>
+          <a href={`mailto:${SITE.email}`}>{SITE.email}</a> · <a href="https://github.com/Swayam2004">github</a> ·
+          <a href="https://www.linkedin.com/in/swayamsahoo1223">linkedin</a>
+        </span>
+        <span>© {new Date().getFullYear()} {SITE.author}</span>
+      </footer>
+    </div>
+    <script>
+      import '../scripts/skins';
+    </script>
+  </body>
+</html>

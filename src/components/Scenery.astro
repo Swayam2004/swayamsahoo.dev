@@ -1,0 +1,66 @@
+---
+const leaves = [
+  { left: '12%', dur: '16s', delay: '-3s' },
+  { left: '38%', dur: '21s', delay: '-11s' },
+  { left: '66%', dur: '18s', delay: '-7s' },
+  { left: '88%', dur: '24s', delay: '-15s' },
+];
+const paws = [
+  [40, 760], [80, 690], [38, 620], [78, 550], [36, 480], [76, 410],
+] as const;
+const canopy = 'M0 0h260c-10 30-40 40-60 34 10 30-20 56-50 44-6 34-50 44-70 22C60 120 20 110 0 90z';
+---
+
+<div class="scene wood" aria-hidden="true">
+  <svg class="canopy l" viewBox="0 0 260 180"><path d={canopy}></path></svg>
+  <svg class="canopy r" viewBox="0 0 260 180"><path d={canopy}></path></svg>
+  <svg class="treeline" viewBox="0 0 1440 150" preserveAspectRatio="none">
+    <path class="far" d="M0 150V96l30-34 26 30 22-46 30 52 26-22 34 40 30-60 28 50 24-28 30 34 34-56 30 54 26-30 30 44 28-58 30 50 26-24 32 36 30-62 30 56 24-26 30 40 34-52 28 46 26-30 32 42 30-60 28 52 26-28 30 38 32-56 30 50 26-22 30 38 30-58 28 50 26-26 32 40 30-54 30 48 26-28 30 44 32-60 28 52 24-24 30 40 30 0V150z"></path>
+    <path class="near" d="M0 150v-30l20-30 18 26 16-40 20 42 18-18 24 34 22-50 20 46 16-20 22 28 26-44 22 42 18-22 22 34 20-48 22 42 18-18 24 30 22-52 22 46 16-20 22 32 26-42 20 38 18-24 24 34 22-50 20 44 18-20 22 30 24-46 22 42 18-18 22 30 22-48 20 42 18-22 24 32 22-44 22 40 18-22 22 36 24-50 20 44 16-18 22 32 22 0V150z"></path>
+    <path class="grass" d="M0 150h1440v-12H0z"></path>
+  </svg>
+  {leaves.map((l) => (
+    <svg class="leaf" style={`left:${l.left};animation-duration:${l.dur};animation-delay:${l.delay}`} viewBox="0 0 16 16">
+      <path d="M2 14C2 6 8 2 14 2c0 6-4 12-12 12z"></path>
+    </svg>
+  ))}
+</div>
+
+<div class="scene cat" aria-hidden="true">
+  <svg class="paws" viewBox="0 0 120 800" preserveAspectRatio="xMidYMax meet">
+    {paws.map(([x, y]) => (
+      <g transform={`translate(${x} ${y})`}>
+        <ellipse cx="0" cy="8" rx="7" ry="6"></ellipse>
+        <circle cx="-8" cy="-1" r="3"></circle>
+        <circle cx="-3" cy="-6" r="3"></circle>
+        <circle cx="3" cy="-6" r="3"></circle>
+        <circle cx="8" cy="-1" r="3"></circle>
+      </g>
+    ))}
+  </svg>
+  <svg class="eyes" viewBox="0 0 70 24"><ellipse cx="14" cy="12" rx="9" ry="6"></ellipse><ellipse cx="56" cy="12" rx="9" ry="6"></ellipse></svg>
+</div>
+
+<style is:global>
+  .scene{position:absolute;inset:0;pointer-events:none;z-index:1;display:none;overflow:hidden}
+  [data-skin=woodland] .scene.wood,[data-skin=marquise] .scene.cat{display:block}
+  .treeline{position:absolute;left:0;right:0;bottom:0;width:100%;height:150px}
+  .treeline .far{fill:#a7c78a}.treeline .near{fill:#6a9a4c}.treeline .grass{fill:#558440}
+  [data-ed=night] .treeline .far{fill:#1d3226}[data-ed=night] .treeline .near{fill:#0d1912}[data-ed=night] .treeline .grass{fill:#0a140e}
+  .canopy{position:absolute;top:-10px;width:260px;height:180px}
+  .canopy.l{left:-40px}.canopy.r{right:-40px;transform:scaleX(-1)}
+  .canopy path{fill:#6f9a52;opacity:.3}
+  [data-ed=night] .canopy path{fill:#0b1a10;opacity:.75}
+  .leaf{position:fixed;top:-30px;width:16px;height:16px;fill:#7aa356;opacity:.75;animation:fall linear infinite}
+  [data-ed=night] .leaf{display:none}
+  @keyframes fall{0%{transform:translate(0,0) rotate(0)}50%{transform:translate(40px,50vh) rotate(200deg)}100%{transform:translate(-20px,105vh) rotate(420deg)}}
+  .fly{position:fixed;width:5px;height:5px;border-radius:50%;background:#f8e27a;box-shadow:0 0 8px 3px rgba(248,226,122,.7);opacity:0;pointer-events:none;z-index:3}
+  [data-skin=woodland][data-ed=night] .fly.on{opacity:1;animation:drift 7s ease-in-out infinite alternate,blink 2.4s ease-in-out infinite}
+  @keyframes drift{0%{translate:0 0}50%{translate:30px -24px}100%{translate:-26px 18px}}
+  .paws{position:fixed;right:3%;bottom:0;width:120px;height:100%;opacity:.13;fill:var(--red)}
+  .eyes{position:fixed;left:3%;bottom:40px;width:70px;height:24px;opacity:0;transition:opacity .6s;transform-origin:center}
+  .eyes ellipse{fill:#ffb347;filter:drop-shadow(0 0 4px #ff8a3d)}
+  [data-skin=marquise][data-ed=night] .eyes{opacity:1;animation:catblink 5s infinite}
+  @keyframes catblink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+  @media (max-width:959px){.canopy{width:150px;height:110px}.paws{display:none}}
+</style>
