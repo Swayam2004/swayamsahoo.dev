@@ -1,0 +1,75 @@
+---
+import Base from '../layouts/Base.astro';
+import BoxHead from '../components/BoxHead.astro';
+import { TYPING_RECORD_WPM } from '../data/site';
+---
+
+<Base title="Typing test" page="typing" description={`Try to beat Swayam Sahoo's ${TYPING_RECORD_WPM} wpm typing record.`}>
+  <BoxHead section="typing" level="h1" />
+  <p class="deck intro">
+    Editor's record: <strong>{TYPING_RECORD_WPM} wpm</strong>. The clock starts on your first key. Mistakes must be fixed before you
+    can move on. <span class="meta">Esc for a new passage.</span>
+  </p>
+
+  <div class="tt panel">
+    <div class="stats meta" aria-live="off">
+      <span><b id="tt-wpm">0</b> wpm</span>
+      <span><b id="tt-acc">100</b>% acc</span>
+      <span><b id="tt-time">0.0</b>s</span>
+      <span id="tt-pb" class="pb">your best: none yet</span>
+    </div>
+    <div class="stage">
+      <div id="tt-text" class="text" aria-hidden="true"></div>
+      <label class="sr-only" for="tt-input">Type the passage shown</label>
+      <textarea
+        id="tt-input"
+        autocomplete="off"
+        autocorrect="off"
+        autocapitalize="off"
+        spellcheck="false"
+        rows="1"></textarea>
+    </div>
+    <div class="foot-row">
+      <span class="meta">— <span id="tt-source"></span></span>
+      <div class="btns" style="margin:0"><button type="button" id="tt-restart">new passage</button></div>
+    </div>
+  </div>
+
+  <section id="tt-result" class="result" hidden aria-live="polite">
+    <div class="boxhead"><h2 class="fl">Result</h2><span class="pl">Share</span></div>
+    <p class="big" id="tt-result-line"></p>
+    <p class="deck" id="tt-verdict"></p>
+    <canvas id="tt-card" width="1200" height="630" aria-label="Share card with your result"></canvas>
+    <p class="meta share-text" id="tt-share-text"></p>
+    <div class="btns">
+      <button type="button" class="p" id="tt-share">share ↗</button>
+      <button type="button" id="tt-copy">copy text</button>
+      <a id="tt-download" href="#" download="typing-test.png">download card</a>
+      <button type="button" id="tt-again">try again</button>
+    </div>
+  </section>
+</Base>
+
+<script>
+  import '../scripts/typing';
+</script>
+
+<style>
+  .intro{margin:0 0 14px}
+  .tt{position:relative}
+  .stats{display:flex;flex-wrap:wrap;gap:18px;align-items:baseline;margin-bottom:10px}
+  .stats b{font-family:var(--sc);font-weight:400;font-size:26px;color:var(--ink)}
+  .stats .pb{margin-left:auto}
+  .stage{position:relative}
+  .text{font-family:var(--mono);font-size:clamp(17px,2.1vw,21px);line-height:1.75;color:var(--muted);cursor:text;user-select:none;word-break:normal;overflow-wrap:break-word}
+  .text :global(span.ok){color:var(--ink)}
+  .text :global(span.bad){background:var(--red);color:var(--paper);border-radius:2px}
+  .text :global(span.cur){box-shadow:inset 0 -3px 0 var(--red)}
+  #tt-input{position:absolute;inset:0;width:100%;height:100%;opacity:0;resize:none;border:0;font-size:16px;caret-color:transparent;cursor:text}
+  .tt:focus-within{outline:2px solid var(--red);outline-offset:3px}
+  .foot-row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:12px}
+  .result{margin-top:28px}
+  .big{font-family:var(--sc);font-size:30px}
+  canvas{width:100%;max-width:720px;height:auto;border:1px solid var(--rule);margin:8px 0;display:block}
+  .share-text{max-width:720px}
+</style>
