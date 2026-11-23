@@ -1,6 +1,7 @@
 import type { APIRoute } from 'astro';
 
-const PATHS = ['/', '/projects', '/shelf', '/typing'] as const;
+// trailing slashes match the canonical URLs; the bare form 307s to these
+const PATHS = ['/', '/projects/', '/shelf/', '/typing/'] as const;
 
 export const GET: APIRoute = ({ site }) => {
   const base = site ?? new URL('https://swayamsahoo.dev');
