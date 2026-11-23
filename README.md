@@ -18,6 +18,6 @@ npx wrangler login   # once, opens the browser
 npm run deploy
 ```
 
-The Worker serves `swayamsahoo.dev` as a Custom Domain (`routes` in `wrangler.jsonc`), which is also the default `site` for canonical, Open Graph, robots and sitemap URLs. Set `SITE_URL` only to build for a different origin.
+The Worker serves `swayamsahoo.dev` through `routes` in `wrangler.jsonc`. The workers.dev address is off. Canonical, Open Graph, robots and sitemap URLs all default to `https://swayamsahoo.dev`. To build for another origin, set `SITE_URL`.
 
 Glossary of site terms: [CONTEXT.md](CONTEXT.md).
