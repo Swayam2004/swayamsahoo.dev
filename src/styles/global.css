@@ -74,6 +74,11 @@ a:hover{color:var(--red)}
 
 .foot{border-top:4px double var(--rule);margin-top:10px;padding-top:12px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
 .foot a{text-decoration:none}
+.foot .hint{all:unset;cursor:pointer}
+.foot .hint:hover{color:var(--red)}
+.foot .hint:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+.foot kbd{font-family:var(--mono);border:1px solid var(--soft);border-bottom-width:2px;padding:0 5px;border-radius:3px}
+@media (max-width:959px){.foot .hint{display:none}}
 
 /* ============ type + parts ============ */
 .kicker{font-family:var(--sc);font-size:13px;letter-spacing:.14em;color:var(--red)}
