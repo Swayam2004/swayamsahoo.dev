@@ -18,10 +18,10 @@ export interface Command {
 
 export const COMMANDS: readonly Command[] = [
   { id: 'home', label: 'Home', hint: 'front page', key: 'h', action: { kind: 'go', href: '/' } },
-  { id: 'projects', label: 'Projects', hint: 'every project', key: 'p', action: { kind: 'go', href: '/projects' } },
+  { id: 'projects', label: 'Projects', hint: 'every project', key: 'p', action: { kind: 'go', href: '/projects/' } },
   { id: 'resume', label: 'Resume', hint: 'opens the PDF in a new tab', key: 'r', action: { kind: 'go', href: SITE.resume, newTab: true } },
-  { id: 'shelf', label: 'Board games', hint: 'the shelf', key: 's', action: { kind: 'go', href: '/shelf' } },
-  { id: 'typing', label: 'Typing test', hint: 'beat 104 wpm', key: 't', action: { kind: 'go', href: '/typing' } },
+  { id: 'shelf', label: 'Board games', hint: 'the shelf', key: 's', action: { kind: 'go', href: '/shelf/' } },
+  { id: 'typing', label: 'Typing test', hint: 'beat 104 wpm', key: 't', action: { kind: 'go', href: '/typing/' } },
   { id: 'email', label: 'Copy email', hint: SITE.email, key: 'c', action: { kind: 'copy-email' } },
   { id: 'github', label: 'GitHub', hint: 'Swayam2004', action: { kind: 'go', href: SOCIALS.github.href } },
   { id: 'linkedin', label: 'LinkedIn', hint: 'swayamsahoo1223', action: { kind: 'go', href: SOCIALS.linkedin.href } },
