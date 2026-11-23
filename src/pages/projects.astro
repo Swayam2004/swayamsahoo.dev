@@ -1,0 +1,56 @@
+---
+import Base from '../layouts/Base.astro';
+import BoxHead from '../components/BoxHead.astro';
+import { GAMES, PROJECTS } from '../data/projects';
+import { SOCIALS } from '../data/site';
+---
+
+<Base title="Projects" page="projects" description="Projects by Swayam Sahoo: agent systems, ML pipelines, hackathon builds and small games.">
+  <BoxHead section="projects" level="h1" />
+  <p class="deck intro">Everything worth printing, biggest first. Source for most of it lives on <a href={SOCIALS.github.href}>GitHub</a>.</p>
+
+  <div class="cols">
+    {PROJECTS.map((p) => (
+      <article class="story">
+        <div class="kicker">{p.kicker}</div>
+        <h2 class="hl">{p.headline}</h2>
+        <p class="name meta">{p.name}</p>
+        <p>{p.summary}</p>
+        <div class="meta">
+          {p.meta}
+          {p.link && (
+            <>
+              {' · '}
+              <a href={p.link.href} data-track="dispatch">{p.link.label} ↗</a>
+            </>
+          )}
+        </div>
+        <div class="meta stack">{p.stack.join(' · ')}</div>
+      </article>
+    ))}
+  </div>
+
+  <section class="games">
+    <div class="boxhead"><h2 class="fl">Games Built</h2><span class="pl">Game dev</span></div>
+    <div class="ledger">
+      {GAMES.map((g) => (
+        <div>
+          <span>{g.href ? <a href={g.href}>{g.name} ↗</a> : g.name}</span>
+          <span>{g.note}</span>
+        </div>
+      ))}
+    </div>
+  </section>
+</Base>
+
+<style>
+  .intro{margin:0 0 18px}
+  .cols{columns:3 300px;column-gap:44px;column-rule:1px solid var(--rule)}
+  .cols .story{break-inside:avoid;display:block;padding-bottom:16px;margin-bottom:16px;border-bottom:1px solid var(--soft)}
+  .cols .hl{font-size:22px}
+  .name{margin:-4px 0 6px}
+  .stack{margin-top:2px}
+  .games{margin-top:22px}
+  .games .ledger>div{grid-template-columns:200px 1fr}
+  @media (max-width:560px){.games .ledger>div{grid-template-columns:1fr;gap:0}}
+</style>
