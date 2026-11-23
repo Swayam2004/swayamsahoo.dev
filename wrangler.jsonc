@@ -3,8 +3,8 @@
   "name": "swayamsahoo-dev",
   "compatibility_date": "2026-11-23",
   "routes": [{ "pattern": "swayamsahoo.dev", "custom_domain": true }],
-  // workers.dev stays live for old links; its pages declare swayamsahoo.dev as canonical
-  "workers_dev": true,
+  // the custom domain is the only address
+  "workers_dev": false,
   "assets": {
     "directory": "./dist",
     "not_found_handling": "404-page"
