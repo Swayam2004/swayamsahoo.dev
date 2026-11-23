@@ -119,12 +119,14 @@ document.addEventListener('keydown', (e) => {
     else openPalette();
     return;
   }
-  if (typing || dialog?.open || e.metaKey || e.ctrlKey || e.altKey) return;
-  if (e.key === '?') {
+  if (dialog?.open || e.metaKey || e.ctrlKey || e.altKey) return;
+  // fields marked data-palette-key (the idle typing test) let ? through; real text fields keep it
+  if (e.key === '?' && (!typing || target?.closest('[data-palette-key]'))) {
     e.preventDefault();
     openPalette();
     return;
   }
+  if (typing) return;
   if (pending !== undefined) {
     clearTimeout(pending);
     pending = undefined;
