@@ -120,8 +120,9 @@ document.addEventListener('keydown', (e) => {
     return;
   }
   if (dialog?.open || e.metaKey || e.ctrlKey || e.altKey) return;
-  // fields marked data-palette-key (the idle typing test) let ? through; real text fields keep it
-  if (e.key === '?' && (!typing || target?.closest('[data-palette-key]'))) {
+  // / is the search key on many sites, so visitors try it. Fields marked data-palette-key
+  // (the idle typing test) let both keys through; real text fields keep them.
+  if ((e.key === '?' || e.key === '/') && (!typing || target?.closest('[data-palette-key]'))) {
     e.preventDefault();
     openPalette();
     return;
