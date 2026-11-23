@@ -264,7 +264,7 @@ document.addEventListener('site:skin', () => {
   else if (done) void drawCard();
 });
 document.addEventListener('site:edition', () => {
-  if (done) setTimeout(() => void drawCard(), 50);
+  if (done) void drawCard();
 });
 
 showPB();

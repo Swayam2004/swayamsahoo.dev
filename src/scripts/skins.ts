@@ -107,12 +107,13 @@ edButtons.forEach((btn) =>
           if (toNight) releaseFlies(btn);
           else hideFlies();
         }
+        // inside the update so listeners read the new edition, not the snapshot
+        document.dispatchEvent(new CustomEvent('site:edition', { detail: { night: toNight } }));
       },
       'circle',
       btn,
     );
     store('edition', toNight ? 'night' : 'day');
-    document.dispatchEvent(new CustomEvent('site:edition', { detail: { night: toNight } }));
   }),
 );
 
@@ -140,12 +141,13 @@ export function applySkin(skin: Skin, from: Element | null = menuBtn): void {
       syncMenu();
       if (skin === 'woodland' && isNight()) releaseFlies(document.querySelector('.ed-woodland'));
       else hideFlies();
+      // inside the update so listeners read the new skin, not the snapshot
+      document.dispatchEvent(new CustomEvent('site:skin', { detail: { skin } }));
     },
     'fade',
     from ?? document.body,
   );
   store('skin.pick', JSON.stringify({ skin, date: todayKey() }));
-  document.dispatchEvent(new CustomEvent('site:skin', { detail: { skin } }));
 }
 
 export function nextSkin(): void {
