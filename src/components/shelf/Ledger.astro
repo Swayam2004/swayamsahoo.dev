@@ -1,0 +1,61 @@
+---
+// The table under the shelf, the real content. Hovering a row lifts its box, and the reverse.
+import { formatDate, type ShelfGame } from '../../lib/shelf';
+import { isTiered, spineStyle, tierOf, toneClass } from '../../lib/cafe';
+import { TIERS } from '../../data/games';
+
+interface Props { games: readonly ShelfGame[] }
+const { games } = Astro.props;
+const tiered = isTiered(games);
+const rank = (g: ShelfGame): number => (tierOf(g.name) < 0 ? TIERS.length : tierOf(g.name));
+const rows = tiered ? [...games].sort((a, b) => rank(a) - rank(b)) : games;
+---
+
+<table class="ledger">
+  <thead>
+    <tr>
+      {tiered && <th scope="col">Tier</th>}
+      <th scope="col">Game</th><th scope="col" class="n">Plays</th><th scope="col" class="n">Hosted</th><th scope="col">Last played</th>
+    </tr>
+  </thead>
+  <tbody>
+    {rows.map((g) => (
+      <tr data-game={g.name}>
+        {tiered && <td class="tier">{TIERS[tierOf(g.name)] ?? '·'}</td>}
+        <td class="game">
+          <span class:list={['chip', toneClass(g.name)]} style={spineStyle(g.name)}></span><span class="gname">{g.name}</span>
+          {g.tags.map((t) => <span class={`tag ${t === 'Made in India' ? 'india' : ''}`}>{t}</span>)}
+          {g.notes.length > 0 && <span class="note">with {g.notes.join('; ')}</span>}
+        </td>
+        <td class="n plays">{g.plays}</td>
+        <td class="n hosted">{g.hosted || '·'}</td>
+        <td class="meta">{formatDate(g.lastPlayed)}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
+<style>
+  .ledger{width:100%;border-collapse:collapse;font-size:15.5px}
+  .ledger th{font-family:var(--sc);font-weight:400;font-size:13px;letter-spacing:.1em;color:var(--muted);text-align:left;border-bottom:2px solid var(--rule);padding:6px 10px 6px 0}
+  .ledger td{border-bottom:1px dashed var(--soft);padding:8px 10px 8px 0;vertical-align:baseline}
+  .ledger tr.on td{background:color-mix(in oklab,var(--red) 10%,transparent)}
+  .ledger .n{text-align:right;font-family:var(--mono);width:80px}
+  .tier{font:12px var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted);width:90px}
+  .chip{display:inline-block;width:8px;height:16px;background:var(--bx);margin-right:8px;vertical-align:-2px}
+  .gname{font-family:var(--sc);font-size:18px;margin-right:8px}
+  .tag{display:inline-block;font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;border:1px solid var(--soft);padding:0 6px;margin-right:4px;color:var(--muted);vertical-align:2px}
+  .tag.india{border-color:var(--red);color:var(--red)}
+  :global([data-skin=woodland]) .tag,:global([data-skin=marquise]) .tag{border-radius:999px}
+  .note{display:block;font-family:var(--fell);font-style:italic;font-size:13.5px;color:var(--muted);margin-left:16px}
+  @media (max-width:560px){
+    .ledger thead{display:none}
+    .ledger tr{display:grid;grid-template-columns:1fr auto;border-bottom:1px dashed var(--soft);padding:6px 0}
+    .ledger td{border:0;padding:0}
+    .ledger td.game,.ledger td.tier{grid-column:1/-1}
+    .ledger td.n{width:auto;text-align:left}
+    .ledger td.plays::before{content:"plays "}
+    .ledger td.hosted{display:none}
+    .ledger td.meta{text-align:right}
+  }
+</style>

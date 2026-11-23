@@ -1,0 +1,17 @@
+/* Box colours for the café shelf, drawn from the skin's tokens so every skin repaints the shelf. */
+.pt0{--bx:var(--red);--bt:var(--paper)}
+.pt1{--bx:var(--ink2);--bt:var(--paper)}
+.pt2{--bx:var(--muted);--bt:var(--paper)}
+.pt3{--bx:color-mix(in oklab,var(--red) 55%,var(--ink2));--bt:var(--paper)}
+.pt4{--bx:var(--soft);--bt:var(--ink)}
+.pt5{--bx:color-mix(in oklab,var(--soft) 55%,var(--paper));--bt:var(--ink)}
+/* cover accents and patterns (generated, original) */
+.pa0{--pa:var(--paper)} .pa1{--pa:var(--red)} .pa2{--pa:var(--soft)} .pa3{--pa:var(--ink)}
+.pat0{--pat:repeating-conic-gradient(from 0deg at 50% 115%,var(--a) 0 5deg,transparent 5deg 11deg)}
+.pat1{--pat:conic-gradient(var(--a) 25%,transparent 0 50%,var(--a) 0 75%,transparent 0) 0 0/calc(var(--s) * 6) calc(var(--s) * 6)}
+.pat2{--pat:repeating-linear-gradient(135deg,var(--a) 0 calc(var(--s) * 1.4),transparent 0 calc(var(--s) * 4))}
+.pat3{--pat:radial-gradient(var(--a) 30%,transparent 33%) 0 0/calc(var(--s) * 4) calc(var(--s) * 4)}
+.pat4{--pat:radial-gradient(120% 55% at 25% 100%,var(--a) 60%,transparent 61%),radial-gradient(90% 42% at 85% 100%,var(--a) 60%,transparent 61%)}
+.pat5{--pat:radial-gradient(circle at 68% 62%,var(--a) 0 16%,transparent 17%),repeating-radial-gradient(circle at 68% 62%,transparent 0 calc(var(--s) * 2.2),var(--a) 0 calc(var(--s) * 2.7))}
+.pat6{--pat:linear-gradient(var(--a) 1px,transparent 1px) 0 0/calc(var(--s) * 3) calc(var(--s) * 3),linear-gradient(90deg,var(--a) 1px,transparent 1px) 0 0/calc(var(--s) * 3) calc(var(--s) * 3)}
+.pat7{--pat:repeating-radial-gradient(circle at 0 100%,transparent 0 calc(var(--s) * 2),var(--a) 0 calc(var(--s) * 3.2))}

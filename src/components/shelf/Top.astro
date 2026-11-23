@@ -1,0 +1,26 @@
+---
+// Casual games left lying on top of the unit, placed loosely.
+import Box from './Box.astro';
+import Plant from './Plant.astro';
+import { topLayout } from '../../lib/cafe';
+
+interface Props { names: readonly string[]; cm: number }
+const { names, cm } = Astro.props;
+const groups = topLayout(names, cm, cm);
+const tilt = (deg: number, dx: number): string => `--tilt:${deg}deg;--dx:${dx};`;
+---
+
+<div class="top" aria-hidden="true">
+  {groups.map((gr) =>
+    gr.type === 'plant' ? <Plant /> :
+    gr.type === 'stand' ? <Box name={gr.box.name} orient={gr.box.orient} turn={gr.box.turn} style={tilt(gr.box.tilt, 0)} /> :
+    <div class="stack">{gr.boxes.map((b) => <Box name={b.name} orient="flat" style={tilt(b.tilt, b.dx)} />)}</div>
+  )}
+</div>
+
+<style>
+  .top{display:flex;align-items:flex-end;justify-content:space-evenly;padding:0 calc(var(--post) + var(--s) * 3)}
+  .top > :global(.bx),.stack :global(.bx){transform:translateX(calc(var(--dx, 0) * var(--s))) rotate(var(--tilt, 0deg));transform-origin:50% 100%}
+  .stack{display:flex;flex-direction:column;align-items:center}
+  .top :global(.plant){width:calc(var(--s) * 12);min-width:36px}
+</style>
