@@ -22,7 +22,8 @@ const font = (name, cssVariable, weights, styles = ['normal'], fallback = 'serif
 });
 
 export default defineConfig({
-  site: 'https://swayamsahoo.dev',
+  // canonical + Open Graph URLs; set SITE_URL to the workers.dev URL until the domain is live
+  site: process.env.SITE_URL ?? 'https://swayamsahoo.dev',
   compressHTML: true,
   fonts: [
     // frontier
