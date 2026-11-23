@@ -3,6 +3,7 @@ import { Font } from 'astro:assets';
 import '../styles/global.css';
 import SkinControls from '../components/SkinControls.astro';
 import Scenery from '../components/Scenery.astro';
+import CommandPalette from '../components/CommandPalette.astro';
 import { SITE } from '../data/site';
 
 interface Props {
@@ -117,12 +118,14 @@ const dateline = new Date().toLocaleDateString('en-US', {
           <a href={`mailto:${SITE.email}`}>{SITE.email}</a> · <a href="https://github.com/Swayam2004">github</a> ·
           <a href="https://www.linkedin.com/in/swayamsahoo1223">linkedin</a>
         </span>
-        <span>© {new Date().getFullYear()} {SITE.author}</span>
+        <span><button type="button" class="hint" data-open-palette>press <kbd>?</kbd> for commands</button> · © {new Date().getFullYear()} {SITE.author}</span>
       </footer>
     </div>
+    <CommandPalette />
     <script>
       import '../scripts/skins';
       import '../scripts/telegrams';
+      import '../scripts/palette';
     </script>
   </body>
 </html>
